@@ -11,6 +11,7 @@ import allauth.app_settings
 from allauth.account.models import EmailAddress
 from allauth.account.utils import get_next_redirect_url, setup_user_email
 from allauth.utils import get_user_model
+from common.encrypted_fields import EncryptedTextField
 
 from ..utils import get_request_param
 from . import app_settings, providers
@@ -139,11 +140,11 @@ class SocialAccount(models.Model):
 class SocialToken(models.Model):
     app = models.ForeignKey(SocialApp, on_delete=models.CASCADE)
     account = models.ForeignKey(SocialAccount, on_delete=models.CASCADE)
-    token = models.TextField(
+    token = EncryptedTextField(
         verbose_name=_("token"),
         help_text=_('"oauth_token" (OAuth1) or access token (OAuth2)'),
     )
-    token_secret = models.TextField(
+    token_secret = EncryptedTextField(
         blank=True,
         verbose_name=_("token secret"),
         help_text=_('"oauth_token_secret" (OAuth1) or refresh token (OAuth2)'),
